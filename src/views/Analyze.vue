@@ -1,7 +1,10 @@
 <template>
   <Layout>
     <div class="top">
-      <DateRangeTabs :data-source="intervalType" :value.sync="currentInterval" />
+      <DateRangeTabs
+        :data-source="intervalType"
+        :value.sync="currentInterval"
+      />
       <em class="chooseTime" @click="chooseTime">
         <span v-if="dateRange.year">{{ year }}</span>
         <span v-if="dateRange.year">年</span>
@@ -14,9 +17,15 @@
     </div>
     <div class="chart-wrapper">
       <div class="chart-title">
-        <span v-if="currentInterval === 'month'" class="subtitle">月度分析</span>
+        <span v-if="currentInterval === 'month'" class="subtitle"
+          >月度分析</span
+        >
         <span v-if="currentInterval === 'year'" class="subtitle">年度分析</span>
-        <AccountTypeTabs classPrefix="type" :data-source="accountType" :value.sync="currentAccount" />
+        <AccountTypeTabs
+          classPrefix="type"
+          :data-source="accountType"
+          :value.sync="currentAccount"
+        />
       </div>
       <Chart :source="source" />
     </div>
@@ -69,7 +78,12 @@ export default class Analyze extends Vue {
   created() {
     store.commit("updateDbDate", "month");
     store.commit("fetchRecords");
-    this.getSource(this.currentInterval, this.year, this.month, this.currentAccount);
+    this.getSource(
+      this.currentInterval,
+      this.year,
+      this.month,
+      this.currentAccount
+    );
   }
   get year() {
     return store.state.currentDate.year;
@@ -84,12 +98,31 @@ export default class Analyze extends Vue {
     return store.state.dateRange;
   }
 
-  getSource(currentInterval: string, year: number, month: number, accoutType: string) {
+  getSource(
+    currentInterval: string,
+    year: number,
+    month: number,
+    accoutType: string
+  ) {
     const records = store.state.records;
-    const setSourceItem = function(createdYear: number, createdMonth: number, createdAccountType: string, fn: Function) {
-      if (currentInterval === "month" && year === createdYear && month === createdMonth && accoutType === createdAccountType) {
+    const setSourceItem = function (
+      createdYear: number,
+      createdMonth: number,
+      createdAccountType: string,
+      fn: Function
+    ) {
+      if (
+        currentInterval === "month" &&
+        year === createdYear &&
+        month === createdMonth &&
+        accoutType === createdAccountType
+      ) {
         fn();
-      } else if (currentInterval === "year" && year === createdYear && accoutType === createdAccountType) {
+      } else if (
+        currentInterval === "year" &&
+        year === createdYear &&
+        accoutType === createdAccountType
+      ) {
         fn();
       } else {
         return;
@@ -120,6 +153,7 @@ export default class Analyze extends Vue {
     this.computeProportion();
     this.source = this.sortByCount(this.source);
   }
+
   sortByCount(source: sourceType[]) {
     if (source.length <= 1) {
       return source;
@@ -135,7 +169,10 @@ export default class Analyze extends Vue {
         right.push(source[i]);
       }
     }
-    const resultArray: sourceType[] = this.sortByCount(left).concat(pivot, this.sortByCount(right));
+    const resultArray: sourceType[] = this.sortByCount(left).concat(
+      pivot,
+      this.sortByCount(right)
+    );
     return resultArray;
   }
   computeProportion() {

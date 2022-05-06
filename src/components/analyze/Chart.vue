@@ -3,7 +3,9 @@
     <div class="chart" id="chart"></div>
     <ul v-if="!isEmpty" class="detailList">
       <li class="detailItem" v-for="item in source" :key="item.tagName">
-        <span class="proportion">{{ item.tagName }}：{{ item.proportion }}</span>
+        <span class="proportion"
+          >{{ item.tagName }}：{{ item.proportion }}</span
+        >
         <progress max="100" :value="getValue(item.proportion)"></progress>
         <p class="amount">支出金额：{{ item.count }}</p>
       </li>
